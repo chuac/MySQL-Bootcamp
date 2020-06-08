@@ -5,6 +5,8 @@ CREATE DATABASE <db_name>;
 
 DROP DATABASE <db_name>;
 
+show databases;
+
 Code won't execute until it hits a semi-colon.
 
 USE <db_name>;
@@ -14,3 +16,46 @@ SELECT database(); // will tell you which db you're currently using.
 A db is just a bunch of tables (in relational dbs).
 
 Convention for table names is to pluralise them. Like products, cats, etc
+
+    CREATE TABLE tablename
+      (
+        column_name data_type,
+        column_name data_type
+      );
+
+    CREATE TABLE cats
+      (
+        name VARCHAR(100),
+        age INT
+      );
+
+For a simple experiment, these 3 ways to show tables provides the same output:
+    SHOW TABLES;
+     
+    SHOW COLUMNS FROM tablename;
+     
+    DESC tablename;
+
+
+DROP TABLE <tablename>;  <-- Be careful with this!
+
+
+INSERT INTO <tablename>(<column1>, <column2>)
+VALUES (<column1DATA>, <column2DATA>);
+^ The order matters depending on which column you first declare in the INSERT INTO line, the VALUES data has to match the order.
+
+You can multiple insert! Declare an order of columns you want to insert these rows into with 'INSERT INTO', then have multiple data pairs after VALUEs like:
+    INSERT INTO table_name 
+                (column_name, column_name) 
+    VALUES      (value, value), 
+                (value, value), 
+                (value, value);
+
+To insert a string (VARCHAR) value that contains quotations, we can either escape the quotes with a backslash like \' or alternate single and double quotes.
+
+When you affect a row, there could be a warning.
+SHOW WARNINGS; to see what warnings there were. Strings longer than max length will get truncated to fit.
+
+When we create a table, we can define the columns to be NOT NULL. It will not be permitted to be empty... but you should also provide a default value... otherwise
+	INT will default to 0, and VARCHAR will default to empty string ''
+We should chain on 'NOT NULL' AND a 'DEFAULT' .
