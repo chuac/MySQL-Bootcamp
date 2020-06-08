@@ -58,4 +58,28 @@ SHOW WARNINGS; to see what warnings there were. Strings longer than max length w
 
 When we create a table, we can define the columns to be NOT NULL. It will not be permitted to be empty... but you should also provide a default value... otherwise
 	INT will default to 0, and VARCHAR will default to empty string ''
-We should chain on 'NOT NULL' AND a 'DEFAULT' .
+We should chain on 'NOT NULL' AND a 'DEFAULT' when creating our table.
+
+CREATE TABLE cats
+      (
+        name VARCHAR(100) NOT NULL DEFAULT 'no name provided',
+        age INT NOT NULL DEFAULT 99
+      );
+
+
+Primary Key: A unique identifier. Declare it when creating a table, can add on optional auto_increment to it! Two ways to define a column as the primary key: see below.
+    CREATE TABLE unique_cats2 (
+        cat_id INT NOT NULL AUTO_INCREMENT,
+        name VARCHAR(100),
+        age INT,
+        PRIMARY KEY (cat_id)
+    );
+
+CREATE TABLE employees (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    last_name VARCHAR(100) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    middle_name VARCHAR(100),
+    age INT NOT NULL,
+    current_status VARCHAR(50) NOT NULL DEFAULT 'employed'
+);
