@@ -1,0 +1,16 @@
+GOORM IDE
+To start the CLI run:	mysql-ctl cli
+
+CREATE DATABASE <db_name>;
+
+DROP DATABASE <db_name>;
+
+Code won't execute until it hits a semi-colon.
+
+USE <db_name>;
+
+SELECT database(); // will tell you which db you're currently using.
+
+A db is just a bunch of tables (in relational dbs).
+
+Convention for table names is to pluralise them. Like products, cats, etc
