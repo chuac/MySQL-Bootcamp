@@ -5,7 +5,7 @@ CREATE DATABASE <db_name>;
 
 DROP DATABASE <db_name>;
 
-show databases;
+SHOW databases;
 
 Code won't execute until it hits a semi-colon.
 
@@ -111,3 +111,29 @@ Running SQL files: Firstly, make sure your SQL CLI is ran from the same director
 	Thirdly, use Source to run your file: 'source query.sql' will run all the SQL code inside query.sql .
 
 	To run an SQL file that's inside another folder (let's say the folder is called 'testing'), run 'source testing/query.sql' .
+
+MySQL String Functions: https://dev.mysql.com/doc/refman/8.0/en/string-functions.html
+	You can chain on string functions like: SELECT CONCAT(SUBSTRING(title, 1, 10), '...') AS 'short title' FROM books;
+
+	CONCAT: CONCAT(firstColumn, secondColumn) or CONCAT(author_fname, ' ', author_lname) .
+		SELECT CONCAT(author_fname, ' ', author_lname) AS full_name FROM books;
+	CONCAT_WS: CONCAT but with a seperator you can define once and it'll be used to seperate all the strings you want to concatenate.
+
+	SUBSTRING: Indexes in MySQL start from 1, not 0.
+		SUBSTRING(str FROM pos FOR len)
+		SELECT SUBSTRING('Quadratically', 5, 6);  would output 'ratica' .
+
+		SELECT SUBSTRING(title, 1, 10) AS 'short title' FROM books;
+
+	REPLACE: IT IS case sensitive when it searches for occurences of the string/character to replace.
+		SELECT REPLACE('HellO World', 'o', '*'); would output 'HellO W*rld' .
+
+		SELECT REPLACE(title, 'e', '3') FROM books;
+
+	REVERSE: Very simple. SELECT REVERSE('Hello'); would output 'olleH' .
+
+	CHAR_LENGTH: Also very simple. Returns the length of the string.
+		SELECT author_lname, CHAR_LENGTH(author_lname) AS 'length' FROM books;
+
+
+		
