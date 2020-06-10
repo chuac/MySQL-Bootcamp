@@ -83,3 +83,31 @@ CREATE TABLE employees (
     age INT NOT NULL,
     current_status VARCHAR(50) NOT NULL DEFAULT 'employed'
 );
+
+
+the * after SELECT gives us "all the columns". SELECT <columnName> FROM <tableName>
+
+WHERE helps us add specificity. Searching on a VARCHAR for WHERE is case-insensitive. Like WHERE breed="peRsIaN"; is fine
+
+Aliases: rename the label for it to be printed out to us. SELECT name AS cat_names FROM cats;
+
+UPDATE command: Good rule of thumb: Try SELECTing before you UPDATE! <--------------------
+	UPDATE cats SET breed='Shorthair' WHERE breed='Tabby';
+	UPDATE cats SET age=14 WHERE name='Misty';
+	UPDATE shirts SET shirt_size='XS', color='off white' WHERE color='white';
+		^ As you can see above, we can SET multiple columns in one command.
+
+DELETE command: As with UPDATE, a good rule of thumb would be to try SELECTing before DELETE.
+	SELECT * FROM cats WHERE name='Egg';
+then	DELETE FROM cats WHERE name='Egg';
+	
+	Primary keys of other data entries don't shift around when you delete something.
+
+	To delete all entries from a table (but not dropping the actual table): 
+		DELETE FROM <tableName>;
+
+Running SQL files: Firstly, make sure your SQL CLI is ran from the same directory of where your .sql file is in.
+	Secondly, select the proper database you want to use.
+	Thirdly, use Source to run your file: 'source query.sql' will run all the SQL code inside query.sql .
+
+	To run an SQL file that's inside another folder (let's say the folder is called 'testing'), run 'source testing/query.sql' .
