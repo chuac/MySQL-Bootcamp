@@ -135,5 +135,39 @@ MySQL String Functions: https://dev.mysql.com/doc/refman/8.0/en/string-functions
 	CHAR_LENGTH: Also very simple. Returns the length of the string.
 		SELECT author_lname, CHAR_LENGTH(author_lname) AS 'length' FROM books;
 
+	UPPER() and LOWER(): Very simple. SELECT UPPER('Hello World'); would output 'HELLO WORLD' .
 
+Refining our SELECTions:
+	DISTINCT: write DISTINCT after SELECT. Gives us just the unique rows of our nominated columns we're SELECTing. 
+		Consider, two authors in our DB with different firstname but same lastname, if we select both firstname, lastname .. and put DISTINCT infront, it will show
+		both of them. BUT if we just SELECT their lastname (which they both share) .. and put DISTINCT infront, only one entry of their lastname will show.
+	
+	ORDER BY: sort in ascending order by default. Can change to descending by adding DESC to the end. Don't have to ORDER BY some column that you're SELECTing!!
+		SELECT title FROM books ORDER BY title;
+		SELECT title FROM books ORDER BY released_year DESC;
 		
+		Can use a shortcut like below to choose which of the columns you selected, to ORDER BY:
+			SELECT title, author_fname, author_lname FROM books ORDER BY 2; <- that would order by author_fname.
+
+		We can also order by two columns, like if two entries share the same last name, wouldn't we want the first names to be sorted too?
+			SELECT title, author_fname, author_lname FROM books ORDER BY author_lname, author_fname; <- sorts by lastname first then firstname
+	
+	LIMIT: Usually used after an ORDER BY. Specifies how many entries we want to display.
+		SELECT title, released_year FROM books ORDER BY released_year DESC LIMIT 5; <- would output the 5 newest books.
+		
+		We can also set the "starting point" of our LIMIT and how many results we want to show. Could be useful for pagination?:
+			SELECT title, released_year FROM books ORDER BY released_year DESC LIMIT 0, 5; <- would output exactly as above. Note the starting index of 0.
+			The second argument of "how many results" doesn't have a limit. Can be a gigantic number and it won't error out.
+	
+	LIKE: pattern matching for better searching. Won't have to search for exact matches! NOT case sensitive. Works great by using wildcards. Escape wildcards with \
+		SELECT title, author_fname FROM books WHERE author_fname LIKE '%da%'; would output rows where author_fname includes 'da' in there. Any order.
+		SELECT title, author_fname FROM books WHERE author_fname LIKE 'da%'; would only output rows where the author_fname STARTS with 'da'. Doesn't care for trailing.
+		
+		The % wildcard means "anything".
+		THE _ wildcard (underscore) means one character. Putting 4 underscores together means look for something 4 characters long (or 4 digits):
+			SELECT title, stock_quantity FROM books WHERE stock_quantity LIKE '____'; four underscores only returns where stock_quantity is 4 digits long.
+
+
+
+1:40
+4:20
