@@ -142,7 +142,7 @@ Refining our SELECTions:
 		Consider, two authors in our DB with different firstname but same lastname, if we select both firstname, lastname .. and put DISTINCT infront, it will show
 		both of them. BUT if we just SELECT their lastname (which they both share) .. and put DISTINCT infront, only one entry of their lastname will show.
 	
-	ORDER BY: sort in ascending order by default. Can change to descending by adding DESC to the end. Don't have to ORDER BY some column that you're SELECTing!!
+	ORDER BY: sort in ascending order by default (ASC). Can change to descending by adding DESC to the end. Don't have to ORDER BY some column that you're SELECTing!!
 		SELECT title FROM books ORDER BY title;
 		SELECT title FROM books ORDER BY released_year DESC;
 		
@@ -166,6 +166,37 @@ Refining our SELECTions:
 		The % wildcard means "anything".
 		THE _ wildcard (underscore) means one character. Putting 4 underscores together means look for something 4 characters long (or 4 digits):
 			SELECT title, stock_quantity FROM books WHERE stock_quantity LIKE '____'; four underscores only returns where stock_quantity is 4 digits long.
+
+Aggregate Functions:
+	COUNT: literally just counts. Beware of edge cases where there may be duplicate last names but they're actually different people. Run distinct on both name columns!
+		SELECT COUNT(*) FROM books; outputs however many rows there are in the books table (19).
+		SELECT COUNT(DISTINCT author_fname) FROM books; outputs the count of DISTINCT firstnames.
+		SELECT COUNT(title) FROM books WHERE title LIKE '%the%'; outputs how many books there are with 'the' in the title name (6).
+	
+	GROUP BY: Very useful when used in conjunction with another aggregate function. Creates a "super row" where if you use SELECT COUNT(*) then it'll count how many
+			rows got grouped into that super row!
+		SELECT author_fname, author_lname, COUNT(*) FROM books GROUP BY author_lname, author_fname; each row of their fname, lname, then a column of their counts
+			of books.
+		SELECT CONCAT(COUNT(*), ' book(s) released in ', released_year) AS 'year' FROM books GROUP BY released_year; outputs nicer strings in one column like
+			"2 book(s) released in 2017".
+
+	MIN and MAX: works as expected.
+		SELECT MAX(pages) FROM books; returns the highest number of pages, of any record in the db (634).
+		
+		This WON'T WORK:
+			SELECT MAX(pages), title FROM books; will NOT output the book title with the max pages.
+		^ Instead, Use subqueries (slow), ORDER BY and LIMIT, or GROUP BY.
+		
+		SELECT author_fname, author_lname, Max(pages) FROM books GROUP BY author_lname, author_fname; output the author names and the max page count of their books.
+
+	SUM: straightforward. More useful when used with GROUP BY.
+		SELECT author_fname, author_lname, SUM(pages) FROM books GROUP BY author_lname, author_fname; cumulative # of pages each author has written.
+
+	AVG: average to 4 decimal points.
+		SELECT released_year, AVG(stock_quantity) FROM books GROUP BY released_year; released year and the average stock quantity of all the books from that year.
+
+
+
 
 
 
