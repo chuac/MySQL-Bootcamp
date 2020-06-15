@@ -195,10 +195,48 @@ Aggregate Functions:
 	AVG: average to 4 decimal points.
 		SELECT released_year, AVG(stock_quantity) FROM books GROUP BY released_year; released year and the average stock quantity of all the books from that year.
 
+More Data Types:
+	CHAR: has a fixed length. Truncates to the length or pads with spaces. CHAR is faster for fixed length text...BUT if in doubt, just use VARCHAR.
+	
+	DECIMAL: fixed-point type. Calculations are exact.
+		DECIMAL(<maxTotalNumOfDigits>, <numOfDigitsAfterDecimalPoint>). So DECIMAL(5, 2) would be able to hold 999.99.
+		AKA DECIMAL(<precision>, <scale>)
+		If scale is set to 2, then it will add 2 decimals of .00 even if a nice whole number is inserted.
+		Inputting a number longer than the precision WON'T TRUNCATE but will max out at the largest number that can fit. If inserting 1234567 into DECIMAL(5,2), it'll
+			insert 999.99.
+		It will ROUND to <scale> decimal places. If DECIMAL(5, 2) and input 1.9999 then 2.00 will be inserted.
+
+	FLOAT and DOUBLE: floating-point types and calculations are approximate. Use only if precision is not important.
+		FLOAT runs into precision issues after 7 digits
+		DOUBLE runs into precision issues after 15 digits but takes up more memory. Still preferred over FLOAT.
+
+	DATE: date but no time. 'YYYY-MM-DD' format
+	TIME: time but no date. 'HH:MM:SS' format. Not the most useful
+	DATETIME: stores values with a date AND time. 'YYYY-MM-DD HH:MM:SS' format. Most useful
+		CURDATE(): gives current date 
+		CURTIME(): gives current time
+		NOW(): gives current datetime
+
+	There are date and time functions to help us format date/times: https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html .
+		DAYOFWEEK(), DAYOFMONTH(), etc can be helpful but the best is...
+	DATE_FORMAT(): You pass in some "specifiers" to choose how you want the output to be formatted.
+		https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format
+
+		SELECT birthdt, DATE_FORMAT(birthdt, '%d/%m/%Y') FROM people; Would output like DD/MM/YYYY .
+		SELECT DATE_FORMAT(NOW(), '%M %D at %l:%i'); would output like June 15th at 4:39 .
+
+	Date Arithmetic: 
+		DATEDIFF(): DATEDIFF(expr1, expr2) returns expr1 - expr2 as a value in days from one date to the other. Usually expr1 is NOW() and expr2 is date in the past.
+		DATE_ADD() or DATE_SUB(): add or minus "intervals" to datetimes.
+		^ OR use shorthand of + or - . Like datetime + INTERVAL 1 MONTH .
+
+	TIMESTAMP: holds date and time parts (just like DATETIME) but has a different range! Only goes back to 1970. Takes up half the memory space of a DATETIME.
+		Useful to have each row store when it was created. Like for Facebook comments.
+		Add this column called 'created_at' in the CREATE TABLE statement:
+			created_at TIMESTAMP DEFAULT NOW()
+		If we wanted the timestamp to also be updated everytime the row is updated:
+			changed_at TIMESTAMP DEFAULT NOW() ON UPDATE NOW()
+		^ We could also replace NOW() with CURRENT_TIMESTAMP, which is simply a synonym for NOW()
 
 
-
-
-
-1:40
-4:20
+10:45
