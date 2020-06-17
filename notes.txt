@@ -289,5 +289,47 @@ Logical Operators:
     			END AS 'STOCK'
 		FROM books;
 
+Data Relationships:
+	One to One: Not that common, but maybe like a customer table, then a customer_details table
+	One to Many: most common. Prevents duplicated data by seperating data into seperate tables. We'll then link this data relationship with Foreign Keys
+	
+	Foreign Keys: it's convention in the foreign table, to name the foreign key column <mainTableName>_<columnName> .
+		When creating the foreign table that has a column of customer_id intended to hold foreign keys: 
+			customer_id INT,
+    			FOREIGN KEY(customer_id) REFERENCES customers(id)
+		Declaring the foreign key reference is optionaly but it makes MySQL CHECK if the id exists in the customers table. A great constraint to have!
 
-11:15
+		To maintain clean data, like if we delete a customer, we would generally want to also delete their orders, use ON DELETE CASCADE:
+			customer_id INT,
+    			FOREIGN KEY(customer_id) REFERENCES customers(id) ON DELETE CASCADE
+
+	Cross Join: AKA Cartesian Join. Useless, rarely used. Multiplies two tables by jamming them together.
+		SELECT * FROM customers, orders;
+
+	Inner Join: Select all records from table A and B where the join condition is met. Join two tables on a condition where they overlap (a union).
+		Could do it implicitly or explicitly. 
+		when working with 2 or more tables, it's good convention to be explicit about which column/table you're calling (use dot notation).
+		SELECT * FROM customers, orders WHERE customers.id = orders.customer_id;
+		
+		To really do an Explicit Inner Join, use the JOIN __ ON __ keywords (you could type INNER JOIN but INNER is implied if just JOIN is written):
+			SELECT * FROM customers JOIN orders ON customers.id = orders.customer_id;
+
+	Left Join: Take everything from the left table, and if anything from the right table has a Union with the record on the left..then show those too.
+		Like if we do customers LEFT JOIN orders ON customers.id = orders.customer_id;  If there are customers that don't have any orders, the customer would
+		still appear (they wouldn't if it was an Inner Join) but their data in the columns regarding orders (like order_date, amount) would show NULL. 
+			SELECT first_name, last_name, amount FROM customers LEFT JOIN orders ON customer.id = orders.customer_id;
+
+		Use IFNULL(<variableToTest>, <defaultValueIfVariableIsNull>) to replace the NULLs with zero. Could also use Case Statements but IFNULL is cleaner.
+			IFNULL(SUM(amount), 0);
+	
+	Right Join: Just like a left join but the opposite (IF the order of tables we're selecting stay the same). If we change the order of table selection too, then
+		it'd have the same result as a left join. Some RDBMS may support Left Joins only and require you to change order of table selection.
+
+
+
+
+
+
+
+
+4:13
