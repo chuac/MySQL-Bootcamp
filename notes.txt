@@ -238,5 +238,56 @@ More Data Types:
 			changed_at TIMESTAMP DEFAULT NOW() ON UPDATE NOW()
 		^ We could also replace NOW() with CURRENT_TIMESTAMP, which is simply a synonym for NOW()
 
+Logical Operators:
+	NOT EQUAL: !=, works as expected in WHERE statements.
+	NOT LIKE: Use syntax of NOT LIKE, opposite of LIKE.
+	Greater than: > 
+		Greater than or equal to: >=
+	Less than: < . 'a' < 'b' would return 1.
+		Less than or equal to: <=
+	MySQL returns 1 as a truthy value, 0 for falsy. Example where SELECT 99 > 1; returns 1.
+		Case doesn't matter for string comparisons in MySQL, 'A' > 'a' will return a falsy 0, since 'A' = 'a' in MySQL's eyes.
 
-10:45
+	Logical AND: can use AND or &&. Not limited to just two conditions. Can link as many AND conditions together in one SQL statement.
+	Logical OR: can use || or OR but || is deprecated in new versions of MySQL. Also can link as many OR conditions together in one SQL statement.
+
+	BETWEEN: Easier way to write two conditions instead of two Greater Than linked with a Logical AND. It's INCLUSIVE of both ends.
+		Syntax is BETWEEN x AND y; Like WHERE released_year BETWEEN 2004 AND 2015;
+	NOT BETWEEN: Opposite of BETWEEN. Also INCLUSIVE of both ends.
+		Syntax is NOT BETWEEN x AND y; Like WHERE released_year NOT BETWEEN 2004 and 2015;
+	
+	When using comparison operators on date/time objects, it's best to use CAST() to convert values to the desired data types first.
+		CAST('2017-05-02' AS DATETIME);
+	
+	IN: Instead of multiple OR conditions (like if you're looking for records of 3 author names), use IN instead! Not limited to matching text.
+		SELECT title, author_lname FROM books WHERE author_lname IN ('Carver', 'Lahiri', 'Smith');
+	NOT IN: Instead of multiple not AND conditions (like if you're looking for records not from these exact years), use NOT IN.
+		SELECT title, released_year FROM books WHERE released_year NOT IN (2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016);
+
+		Chaining with another condition:
+			SELECT title, released_year FROM books WHERE released_year >= 2000 AND released_year NOT IN (2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016);
+
+		Further improved with MODULO:
+			SELECT title, released_year FROM books WHERE released_year >= 2000 AND released_year % 2 != 0;
+	
+	Case Statements: Adding in logic for an extra column. Always a WHEN, and an ELSE. Use alias (AS) for that column, messy otherwise. No need for commas between WHEN
+			
+		SELECT title, released_year,
+    			CASE 
+        			WHEN released_year >= 2000 THEN 'Modern Lit'
+        			ELSE '20th Century Lit'
+    			END AS 'GENRE'
+		FROM books;
+
+		Don't need to also print out the column you're running logic on. Like stock_quantity below is optional to SELECT.
+
+		SELECT title,
+    			CASE 
+        			WHEN stock_quantity BETWEEN 0 AND 50 THEN '*'
+        			WHEN stock_quantity BETWEEN 51 AND 100 THEN '**'
+        			ELSE '***'
+    			END AS 'STOCK'
+		FROM books;
+
+
+11:15
