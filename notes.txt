@@ -75,6 +75,11 @@ Primary Key: A unique identifier. Declare it when creating a table, can add on o
         PRIMARY KEY (cat_id)
     );
 
+	You can set Primary Key constraint on a "combination" of columns in a table:
+		PRIMARY KEY (user_id, photo_id)
+	The above will only allow unique occurences of <user_id>-<photo_id>. (Seperated by a dash '-').
+	Error like: Duplicate entry '1-2' for key 'PRIMARY'
+
 CREATE TABLE employees (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     last_name VARCHAR(100) NOT NULL,
@@ -343,7 +348,15 @@ Data Relationships:
 			    ON series.id = reviews.series_id
 			ORDER BY title, rating DESC;
 
+Instagram DB Clone: Need tables/schema for USERS, PHOTOS, COMMENTS, LIKES, HASHTAGS, FOLLOWS.
+	
 
+HAVING: Kind of like WHERE, except we can now use it after a GROUP BY clause.
+	
+Node and MySQL: https://www.npmjs.com/package/mysql
+	When you write a query and set the column to an alias, the data will come back in JS objects where the key is the alias!
+
+	Can insert JS objects into MySQL. Object's key name will match DB table's column name. Use the SET ?
 
 
 
