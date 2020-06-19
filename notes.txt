@@ -195,6 +195,8 @@ Aggregate Functions:
 	AVG: average to 4 decimal points.
 		SELECT released_year, AVG(stock_quantity) FROM books GROUP BY released_year; released year and the average stock quantity of all the books from that year.
 
+	ROUND: Not really an aggregate function but it helps to round output to specified decimal places. e.g, ROUND(AVG(ratings), 2); will output to 2 decimal places.
+
 More Data Types:
 	CHAR: has a fixed length. Truncates to the length or pads with spaces. CHAR is faster for fixed length text...BUT if in doubt, just use VARCHAR.
 	
@@ -271,7 +273,7 @@ Logical Operators:
 			SELECT title, released_year FROM books WHERE released_year >= 2000 AND released_year % 2 != 0;
 	
 	Case Statements: Adding in logic for an extra column. Always a WHEN, and an ELSE. Use alias (AS) for that column, messy otherwise. No need for commas between WHEN
-			
+			WHEN statements are ran in order from top to bottom!
 		SELECT title, released_year,
     			CASE 
         			WHEN released_year >= 2000 THEN 'Modern Lit'
@@ -288,6 +290,9 @@ Logical Operators:
         			ELSE '***'
     			END AS 'STOCK'
 		FROM books;
+
+	IF Statement: When you just have one condition, simpler to use an IF statement over Case statement.
+		IF(COUNT(rating) = 0, <doThisIfTrue>, <doThisIfFalse>);
 
 Data Relationships:
 	One to One: Not that common, but maybe like a customer table, then a customer_details table
@@ -313,6 +318,7 @@ Data Relationships:
 		
 		To really do an Explicit Inner Join, use the JOIN __ ON __ keywords (you could type INNER JOIN but INNER is implied if just JOIN is written):
 			SELECT * FROM customers JOIN orders ON customers.id = orders.customer_id;
+		When doing Inner Join, it usually doesn't matter which order we join the tables in, since we'll be choosing which columns to show anyway.
 
 	Left Join: Take everything from the left table, and if anything from the right table has a Union with the record on the left..then show those too.
 		Like if we do customers LEFT JOIN orders ON customers.id = orders.customer_id;  If there are customers that don't have any orders, the customer would
@@ -325,11 +331,21 @@ Data Relationships:
 	Right Join: Just like a left join but the opposite (IF the order of tables we're selecting stay the same). If we change the order of table selection too, then
 		it'd have the same result as a left join. Some RDBMS may support Left Joins only and require you to change order of table selection.
 
+	
+	Many to Many: Like Books <-> Authors, Blog Post <-> Tags, Students <-> Classes.
+		Two tables are connected with a "Join Table".
+		Join 3 tables together simply with another join keyword:
+			SELECT title, rating, CONCAT(first_name, ' ', last_name) as 'reviewer'
+			FROM reviewers
+			INNER JOIN reviews
+			    ON reviewers.id = reviews.reviewer_id
+			INNER JOIN series
+			    ON series.id = reviews.series_id
+			ORDER BY title, rating DESC;
 
 
 
 
 
 
-
-4:13
+10:55
